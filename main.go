@@ -113,8 +113,8 @@ func startHTTPFlv(stream *rtmp.RtmpStream) {
 }
 
 func startAPI(stream *rtmp.RtmpStream) {
-	apiAddr := configure.Config.GetString("api_addr")
-	rtmpAddr := configure.Config.GetString("rtmp_addr")
+	apiAddr := configure.Config.GetString("api_addr")   //8090
+	rtmpAddr := configure.Config.GetString("rtmp_addr") //1935
 
 	if apiAddr != "" {
 		opListen, err := net.Listen("tcp", apiAddr)
@@ -123,7 +123,7 @@ func startAPI(stream *rtmp.RtmpStream) {
 		}
 		opServer := api.NewServer(stream, rtmpAddr)
 		go func() {
-			defer func() {
+			defer func() { // if this thread failed somehow -> this defer block will be called
 				if r := recover(); r != nil {
 					log.Error("HTTP-API server panic: ", r)
 				}

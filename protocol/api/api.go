@@ -142,7 +142,7 @@ type streams struct {
 	Players    []stream `json:"players"`
 }
 
-//http://127.0.0.1:8090/stat/livestat
+// http://127.0.0.1:8090/stat/livestat
 func (server *Server) GetLiveStatics(w http.ResponseWriter, req *http.Request) {
 	res := &Response{
 		w:      w,
@@ -242,7 +242,7 @@ func (server *Server) GetLiveStatics(w http.ResponseWriter, req *http.Request) {
 	res.Data = msgs
 }
 
-//http://127.0.0.1:8090/control/pull?&oper=start&app=live&name=123456&url=rtmp://192.168.16.136/live/123456
+// http://127.0.0.1:8090/control/pull?&oper=start&app=live&name=123456&url=rtmp://192.168.16.136/live/123456
 func (s *Server) handlePull(w http.ResponseWriter, req *http.Request) {
 	var retString string
 	var err error
@@ -311,7 +311,7 @@ func (s *Server) handlePull(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-//http://127.0.0.1:8090/control/push?&oper=start&app=live&name=123456&url=rtmp://192.168.16.136/live/123456
+// http://127.0.0.1:8090/control/push?&oper=start&app=live&name=123456&url=rtmp://192.168.16.136/live/123456
 func (s *Server) handlePush(w http.ResponseWriter, req *http.Request) {
 	var retString string
 	var err error
@@ -374,7 +374,7 @@ func (s *Server) handlePush(w http.ResponseWriter, req *http.Request) {
 	}
 }
 
-//http://127.0.0.1:8090/control/reset?room=ROOM_NAME
+// http://127.0.0.1:8090/control/reset?room=ROOM_NAME
 func (s *Server) handleReset(w http.ResponseWriter, r *http.Request) {
 	//TODO: PROBLEM HERE
 	res := &Response{
@@ -407,7 +407,7 @@ func (s *Server) handleReset(w http.ResponseWriter, r *http.Request) {
 	res.Data = msg
 }
 
-//http://127.0.0.1:8090/control/get?room=ROOM_NAME
+// http://127.0.0.1:8090/control/get?room=ROOM_NAME
 func (s *Server) handleGet(w http.ResponseWriter, r *http.Request) {
 	res := &Response{
 		w:      w,
@@ -430,15 +430,15 @@ func (s *Server) handleGet(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	msg, err := configure.RoomKeys.GetKey(room)
+	_, err := configure.RoomKeys.GetKey(room)
 	if err != nil {
-		msg = err.Error()
+		log.Error(err.Error())
 		res.Status = 400
 	}
-	res.Data = msg
+	res.Data = "kent-test"
 }
 
-//http://127.0.0.1:8090/control/delete?room=ROOM_NAME
+// http://127.0.0.1:8090/control/delete?room=ROOM_NAME
 func (s *Server) handleDelete(w http.ResponseWriter, r *http.Request) {
 	res := &Response{
 		w:      w,
