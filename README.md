@@ -4,7 +4,7 @@ Run `docker run -p 1935:1935 -p 7001:7001 -p 7002:7002 -p 8090:8090 -d gwuhaolin
 
 #### Compile from source
 
-1. Download the source code `git clone https://github.com/gwuhaolin/livego.git`
+1. Download the source code `git clone https://github.com/CE-Thesis-2023/go-rtmp-server`
 2. Go to the livego directory and execute `go build` or `make build`
 
 ## Use
@@ -35,6 +35,3 @@ Usage of ./livego:
       --rtmp_addr string      RTMP server listen address
 ```
 
-### [Use with flv.js](https://github.com/gwuhaolin/blog/issues/3)
-
-Interested in Golang? Please see [Golang Chinese Learning Materials Summary](http://go.wuhaolin.cn/)
