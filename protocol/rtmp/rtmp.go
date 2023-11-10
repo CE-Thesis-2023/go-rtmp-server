@@ -87,7 +87,7 @@ func (s *Server) Serve(rtmpListener net.Listener) (err error) {
 
 	for {
 		var netconn net.Conn
-		
+
 		netconn, err = rtmpListener.Accept()
 		if err != nil {
 			return
@@ -136,13 +136,11 @@ func (s *Server) handleConn(conn *core.Conn) error {
 			}
 			name = key
 		}
-		channel, err := configure.RoomKeys.GetChannel(name) //currently kent-test	
-		fmt.Print(name,"->",channel)
+		channel, err := configure.RoomKeys.GetChannel(name) //currently kent-test
 
-		if err != nil {
+		if err != nil || channel != name {
 			err := fmt.Errorf("invalid key err=%s", err.Error())
 			conn.Close()
-			log.Error("CheckKey err: ", err)
 			return err
 		}
 		connServer.PublishInfo.Name = channel
@@ -289,7 +287,6 @@ func (v *VirWriter) DropPacket(pktQue chan *av.Packet, info av.Info) {
 	log.Debug("packet queue len: ", len(pktQue))
 }
 
-//
 func (v *VirWriter) Write(p *av.Packet) (err error) {
 	err = nil
 

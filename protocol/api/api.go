@@ -123,6 +123,7 @@ func (s *Server) Serve(l net.Listener) error {
 	mux.HandleFunc("/stat/livestat", func(w http.ResponseWriter, r *http.Request) {
 		s.GetLiveStatics(w, r)
 	})
+	fmt.Print("Serving HTTP Server")
 	http.Serve(l, JWTMiddleware(mux))
 	return nil
 }
@@ -407,8 +408,9 @@ func (s *Server) handleReset(w http.ResponseWriter, r *http.Request) {
 	res.Data = msg
 }
 
-// http://127.0.0.1:8090/control/get?room=ROOM_NAME
+// http://127.0.0.1:8090/control/get
 func (s *Server) handleGet(w http.ResponseWriter, r *http.Request) {
+	fmt.Print("GET API DATA")
 	res := &Response{
 		w:      w,
 		Data:   nil,
@@ -416,25 +418,7 @@ func (s *Server) handleGet(w http.ResponseWriter, r *http.Request) {
 	}
 	defer res.SendJson()
 
-	if err := r.ParseForm(); err != nil {
-		res.Status = 400
-		res.Data = "url: /control/get?room=<ROOM_NAME>"
-		return
-	}
-
-	room := r.Form.Get("room")
-
-	if len(room) == 0 {
-		res.Status = 400
-		res.Data = "url: /control/get?room=<ROOM_NAME>"
-		return
-	}
-
-	_, err := configure.RoomKeys.GetKey(room)
-	if err != nil {
-		log.Error(err.Error())
-		res.Status = 400
-	}
+	res.Status = 200
 	res.Data = "kent-test"
 }
 
