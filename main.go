@@ -39,6 +39,10 @@ var VERSION = "master"
 // 	return hlsServer
 // }
 
+func startFFMPEG() {
+
+}
+
 func startRtmp(stream *rtmp.RtmpStream, hlsServer *hls.Server) {
 	rtmpAddr := configure.Config.GetString("rtmp_addr")
 	isRtmps := configure.Config.GetBool("enable_rtmps")
@@ -170,6 +174,5 @@ func main() {
 		}
 
 		startRtmp(stream, nil)
-
 	}
 }
