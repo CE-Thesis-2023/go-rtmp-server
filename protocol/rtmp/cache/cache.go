@@ -22,10 +22,12 @@ func NewCache() *Cache {
 }
 
 func (cache *Cache) Write(p av.Packet) {
+	// check if is metadata
 	if p.IsMetadata {
 		cache.metadata.Write(&p)
 		return
 	} else {
+		// check if it's audio
 		if !p.IsVideo {
 			ah, ok := p.Header.(av.AudioPacketHeader)
 			if ok {
@@ -37,7 +39,6 @@ func (cache *Cache) Write(p av.Packet) {
 					return
 				}
 			}
-
 		} else {
 			vh, ok := p.Header.(av.VideoPacketHeader)
 			if ok {

@@ -1,7 +1,11 @@
 package rtmp
 
 import (
+	"bytes"
 	"fmt"
+	"image"
+	"image/jpeg"
+	"os"
 	"strings"
 	"sync"
 	"time"
@@ -304,6 +308,30 @@ func (s *Stream) SendStaticPush(packet av.Packet) {
 	}
 }
 
+func serveFrames(imgByte []byte) {
+	fmt.Print(imgByte,"\n\n\n\n")
+
+
+    img, _, err := image.Decode(bytes.NewReader(imgByte))
+    if err != nil {
+        log.Fatalln(err)
+    }
+
+    out, _ := os.Create("./img.jpeg")
+    defer out.Close()
+
+    var opts jpeg.Options
+    opts.Quality = 1
+
+    err = jpeg.Encode(out, img, &opts)
+    //jpeg.Encode(out, img, nil)
+    if err != nil {
+        log.Println(err)
+    }
+
+}
+var count = 0 
+
 func (s *Stream) TransStart() {
 	s.isStart = true
 	var p av.Packet
@@ -328,6 +356,14 @@ func (s *Stream) TransStart() {
 			s.SendStaticPush(p)
 		}
 
+		if p.IsAudio == false && p.IsMetadata == false && p.IsVideo == true {
+			serveFrames(p.Data)
+			if count == 3{
+				panic("JK")
+			}
+
+			count++
+		}
 		s.cache.Write(p)
 
 		s.ws.Range(func(key, val interface{}) bool {
